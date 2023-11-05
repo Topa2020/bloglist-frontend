@@ -14,8 +14,6 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [info, setInfo] = useState({ message: null })
   const [loginVisible, setLoginVisible] = useState(false)
-  //const [blogFormVisible, setBlogFormVisible] = useState(false)
-  //const [showAll, setShowAll] = useState(true)
 
   useEffect(() => {
     blogService
@@ -78,9 +76,6 @@ const App = () => {
     return (
       <div>
         <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>log in</button>
-        </div>
-        <div style={showWhenVisible}>
           <LoginForm
             username={username}
             password={password}
@@ -97,9 +92,8 @@ const App = () => {
   const addBlog = async (blogObject) => {
     blogFormRef.current.toggleVisibility()
     try {
-      await blogService.create(blogObject)
-      const all = await blogService.getAll()
-      setBlogs(all)
+      const response = await blogService.create(blogObject)
+      setBlogs(blogs.concat(response))
       notifyWith(`a new blog ${blogObject.title} by ${blogObject.author} added`)
     }
     catch (error) {
@@ -116,9 +110,8 @@ const App = () => {
   const addLike = async (blogId) => {
     const blogToModify = blogs.find(n => n.id === blogId)
     const changedBlog = { ...blogToModify, likes: blogToModify.likes + 1 }
-    await blogService.update(blogId, changedBlog)
-    const all = await blogService.getAll()
-    setBlogs(all)
+    const response = await blogService.update(blogId, changedBlog)
+    setBlogs(blogs.map(b => b.id !== blogId ? b : response))
   }
 
   const removeBlog = id => {

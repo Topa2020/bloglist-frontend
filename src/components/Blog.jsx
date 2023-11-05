@@ -13,7 +13,7 @@ const Blog = ({ blog, addLike, removeBlog, user }) => {
   const [allInfo, setAllInfo] = useState(false)
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       <p>{blog.title}, {blog.author}{' '}
         <span onClick={() => setAllInfo(!allInfo)}>
           <button>{allInfo ? 'hide' : 'view'}</button>
@@ -22,7 +22,7 @@ const Blog = ({ blog, addLike, removeBlog, user }) => {
         <div>
           <p>{blog.url} </p>
           <p>likes {blog.likes} </p>
-          <button onClick={() => addLike(blog.id)}>like</button>
+          <button id='like-button' onClick={() => addLike(blog.id)}>like</button>
           <p>{blog.user.name}</p>
           {user.username === blog.user.username &&
             <button onClick={() => removeBlog(blog.id)}>remove</button>}
